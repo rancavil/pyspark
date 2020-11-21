@@ -7,9 +7,9 @@ RUN useradd -m spark && echo "spark:spark" | chpasswd && adduser spark sudo && e
 WORKDIR /home/spark
 
 USER spark
-RUN wget -q https://downloads.apache.org/spark/spark-3.0.0/spark-3.0.0-bin-hadoop3.2.tgz && tar zxvf spark-3.0.0-bin-hadoop3.2.tgz && rm spark-3.0.0-bin-hadoop3.2.tgz
+RUN wget -q https://downloads.apache.org/spark/spark-3.0.1/spark-3.0.1-bin-hadoop3.2.tgz && tar zxvf spark-3.0.1-bin-hadoop3.2.tgz && rm spark-3.0.1-bin-hadoop3.2.tgz
 
-ENV SPARK_HOME /home/spark/spark-3.0.0-bin-hadoop3.2
+ENV SPARK_HOME /home/spark/spark-3.0.1-bin-hadoop3.2
 
 ENV PATH $PATH:$SPARK_HOME/bin:$SPARK_HOME/sbin
 
