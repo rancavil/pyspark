@@ -22,5 +22,5 @@ COPY docker-entrypoint.sh $SPARK_HOME/sbin
 
 EXPOSE 8080 8081 7077 6066 4040 18080 22 
 
-ENTRYPOINT ["/home/spark/spark-3.0.0-bin-hadoop3.2/sbin/docker-entrypoint.sh"]
+ENTRYPOINT ["/home/spark/spark-3.0.1-bin-hadoop3.2/sbin/docker-entrypoint.sh"]
 
