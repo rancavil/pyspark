@@ -2,7 +2,7 @@
 
 ## Creating a Spark Image
 
-First of all, we'll create an image from scratch. We are going to use Spark 3.0.0.
+First of all, we'll create an image from scratch. We are going to use Spark 3.2.0.
 
      $ git clone https://github.com/rancavil/pyspark.git
      $ cd pyspark
