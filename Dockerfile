@@ -1,8 +1,12 @@
-FROM ubuntu:18.04
+FROM ubuntu:20.04
 
 RUN apt-get update -y && apt-get install vim -y && apt-get install wget -y && apt-get install ssh -y && apt-get install openjdk-8-jdk -y && apt-get install sudo -y
 
 RUN useradd -m spark && echo "spark:spark" | chpasswd && adduser spark sudo && echo "spark     ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers 
+RUN apt install python3-distutils -y && wget https://bootstrap.pypa.io/get-pip.py && sudo python3 get-pip.py
+RUN apt install curl dirmngr apt-transport-https lsb-release ca-certificates -y
+RUN curl -sL https://deb.nodesource.com/setup_12.x | bash 
+RUN apt install nodejs -y && npm install -g configurable-http-proxy && pip3 install jupyterlab==2.1.2 
 
 WORKDIR /home/spark
 
@@ -14,13 +18,17 @@ ENV SPARK_HOME /home/spark/spark-3.2.0-bin-hadoop3.2
 ENV PATH $PATH:$SPARK_HOME/bin:$SPARK_HOME/sbin
 
 RUN cd /usr/bin/ && sudo ln -s python3 python
-RUN sudo apt-get install net-tools iproute2 -y
-RUN sudo apt-get install python3-distutils -y && wget https://bootstrap.pypa.io/get-pip.py && sudo python3 get-pip.py && python -m pip install pandas
-RUN python -m pip install matplotlib && sudo apt-get install python3-tk -y
-
+RUN sudo apt install net-tools iproute2 -y
+RUN sudo python -m pip install pandas
+RUN python -m pip install matplotlib && sudo apt install python3-tk -y
+ENV PYSPARK_DRIVER_PYTHON jupyter
+ENV PYSPARK_DRIVER_PYTHON_OPTS "lab --no-browser --allow-root --ip=0.0.0.0 --port=8000 --NotebookApp.token='' -NotebookApp.password=''"
 COPY docker-entrypoint.sh $SPARK_HOME/sbin
 
-EXPOSE 8080 8081 7077 6066 4040 18080 22 
+WORKDIR /home/spark/analysis
+RUN sudo chown spark.spark /home/spark/analysis
+ENV SHELL bash
 
 ENTRYPOINT ["/home/spark/spark-3.2.0-bin-hadoop3.2/sbin/docker-entrypoint.sh"]
 
+EXPOSE 8000 8080 8081 7077 6066 4040 18080 22
